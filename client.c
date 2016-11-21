@@ -21,25 +21,9 @@ int main(int argc , char *argv[])
 		return 1;
 	}
 	puts("Connected");
-	while(recv(socket_desc, server_reply, 2000, 0) > 0)
-		{
-			puts(server_reply);
-			if(server_reply[0] == 'N')
-			{
-				bzero(server_reply,2000);
-				break;
-			}
-			bzero(server_reply,2000);
-		}
 
 	while(1)
 	{
-		scanf("%s",message);
-		if(send(socket_desc, message,strlen(message), 0) < 0)
-		{
-			puts("Send failed");
-			return 1;
-		}
 		if(recv(socket_desc, server_reply, 2000, 0) < 0)
 		{
 			puts("recv failed");
@@ -50,6 +34,13 @@ int main(int argc , char *argv[])
 		{
 			return 1;
 		}
+		scanf("%s",message);
+		if(send(socket_desc, message,strlen(message), 0) < 0)
+		{
+			puts("Send failed");
+			return 1;
+		}
+		
 	}
 		
 

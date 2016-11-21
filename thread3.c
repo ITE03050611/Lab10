@@ -60,31 +60,56 @@ return 0;
 
 void *connection_handler(void *socket_desc)
 {
-int sock = *(int*)socket_desc;
+int new_socket = *(int*)socket_desc;
 int read_size;
-char *message , client_message[2000];
+char *message,client_Num[4],reAB[10];
 
-message = "Greetings! I am your connection handler\n";
-write(sock , message , strlen(message));
-message = "Now type something and i shall repeat what you type \n";
-write(sock , message , strlen(message));
 
-while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
-{
-write(sock , client_message , strlen(client_message));
-bzero(client_message,2000);
+		int i, j, tmp=0, a, b, c, d,randNum, A, B;
+		int e[5040][4];
+		char ans[4];
+		srand(time(0));
+		for (i=0;i<10000;i++)
+		{
+			a = (i/1)%10;
+			b = (i/10)%10;
+			c = (i/100)%10;
+			d = (i/1000)%10;
+			if (a!=b && a!=c && a!=d && b!=c && b!=d && c!=d)
+			{
+				e[tmp][0] = d;
+				e[tmp][1] = c;
+				e[tmp][2] = b;
+				e[tmp][3] = a;
+				tmp++;
+			}
+		}
+		randNum = (rand()%5040);
+		printf("%d%d%d%d\n",e[randNum][0],e[randNum][1],e[randNum][2],e[randNum][3]);
+		sprintf(ans,"%d",e[randNum][0]*1000+e[randNum][1]*100+e[randNum][2]*10+e[randNum][3]);
+		while(1)
+		{
+			A=0, B=0;
+			bzero(client_Num,4);
+			read(new_socket,client_Num,4);
+			for (i=0;i<4;i++)
+			if (client_Num[i] == ans [i])
+					A++;
+			for (i=0;i<4;i++)
+				for (j=0;j<4;j++)
+					if (client_Num[i] == ans[j] && i!=j)
+						B++;
+			if (A==4)
+			{
+				message = "correct";
+				write(new_socket, message, strlen(message)+1);
+				break;			
+			}
+			else
+			{
+				sprintf(reAB,"%dA%dB",A,B);
+				write(new_socket, reAB, strlen(reAB)+1);
+			}
+		}
+		return 0;
 }
-if(read_size == 0)
-{
-puts("Client disconnected");
-fflush(stdout);
-}
-else if(read_size == -1)
-{
-perror("recv failed");
-}
-
-free(socket_desc);
-return 0;
-}
-

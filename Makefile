@@ -1,6 +1,6 @@
-thread1:thread1.c
-	gcc -o thread1 thread1.c -lpthread
-thread1.o:thread1.c
-	gcc -c thread1.c
+thread2:thread2.c
+	gcc -o thread2 thread2.c -lpthread
+thread2.o:thread2.c
+	gcc -c thread2.c
 clean:
-	rm*.o thread1
+	rm*.o thread2

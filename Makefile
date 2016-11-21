@@ -1,6 +1,8 @@
-thread2:thread2.c
-	gcc -o thread2 thread2.c -lpthread
-thread2.o:thread2.c
-	gcc -c thread2.c
+thread3 client:thread3.c client.c
+	gcc -o thread3 thread3.c -lpthread
+	gcc -o client client.c
+thread3.o client.o:thread3.c client.c
+	gcc -c thread3.c
+	gcc -c client.c
 clean:
-	rm*.o thread2
+	rm*.o thread3 client
